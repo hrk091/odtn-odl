@@ -9,9 +9,6 @@ package org.opendaylight.odtn.impl;
 
 import java.util.concurrent.Future;
 
-import org.opendaylight.controller.sal.binding.api.BindingAwareBroker.ProviderContext;
-import org.opendaylight.controller.sal.binding.api.BindingAwareBroker.RpcRegistration;
-import org.opendaylight.controller.sal.binding.api.BindingAwareProvider;
 import org.opendaylight.yang.gen.v1.urn.onf.otcc.yang.tapi.common.rev180307.GetServiceInterfacePointDetailsInput;
 import org.opendaylight.yang.gen.v1.urn.onf.otcc.yang.tapi.common.rev180307.GetServiceInterfacePointDetailsOutput;
 import org.opendaylight.yang.gen.v1.urn.onf.otcc.yang.tapi.common.rev180307.GetServiceInterfacePointDetailsOutputBuilder;
@@ -25,29 +22,10 @@ import org.opendaylight.yangtools.yang.common.RpcResultBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-
-public class TapiProvider implements BindingAwareProvider, AutoCloseable,
-        TapiCommonService {
+public class TapiProvider implements TapiCommonService {
 
     private static final Logger LOG = LoggerFactory.getLogger(TapiProvider.class);
-
-    private RpcRegistration<TapiCommonService> tapiCommonService;
-
-    @Override
-    public void close() throws Exception {
-        LOG.info("TAPI Common session closed");
-        if (tapiCommonService != null) {
-            tapiCommonService.close();
-        }
-    }
-
-    @Override
-    public void onSessionInitiated(ProviderContext session) {
-        LOG.info("TAPI Common session initiated");
-        tapiCommonService = session.addRpcImplementation(TapiCommonService.class, this);
-    }
 
     @Override
     public Future<RpcResult<GetServiceInterfacePointDetailsOutput>>
@@ -62,8 +40,7 @@ public class TapiProvider implements BindingAwareProvider, AutoCloseable,
     public Future<RpcResult<Void>>
         updateServiceInterfacePoint(UpdateServiceInterfacePointInput input) {
         LOG.info("********** update-service-interface-point called!!");
-        throw new NotImplementedException();
-//        return RpcResultBuilder.success().buildFuture();
+        return RpcResultBuilder.success((Void)null).buildFuture();
     }
 
     @Override
